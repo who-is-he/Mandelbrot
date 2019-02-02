@@ -1,7 +1,7 @@
 # Mandlebrot
 A C program that generates bitmap (.ppm) images of the Mandelbrot Set
 
-![Sea Horse Valley](Scrapbook/seahorse_valley2.ppm)
+![Sea Horse Valley](https://github.com/rabisnath/Mandelbrot/tree/master/Scrapbook/seahorse_valley2.ppm)
 
 ## How to use
 The function make_graph takes seven inputs:
