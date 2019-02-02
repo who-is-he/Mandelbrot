@@ -1,6 +1,8 @@
 # Mandlebrot
 A C program that generates bitmap (.ppm) images of the Mandelbrot Set
 
+![Sea Horse Valley](Scrapbook/seahorse_valley2.ppm)
+
 ## How to use
 The function make_graph takes seven inputs:
 1) pixel density: the number of pixels used to represent a length of one on the complex plane.
