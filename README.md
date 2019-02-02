@@ -2,13 +2,14 @@
 A C program that generates bitmap (.ppm) images of the Mandelbrot Set
 
 ## How to use
-The function make_graph takes six inputs:
+The function make_graph takes seven inputs:
 1) pixel density: the number of pixels used to represent a length of one on the complex plane.
 2) logcial x: the x-coordinate of the top left corner of the viewing window on the complex plane. 
 3) logcial y: the y-coordinate of the top left corner of the viewing window on the complex plane.
 4) logical width: the width of the viewing window on the complex plane.
 5) logical height: the height of the viewing window on the complex plane.
 6) max iterations: the maximum nuber of times the program will iterate f_c(z) at each input.
+7) color option: 0 for black and white, 1 for color based on the number of iterations to go out of bounds, and 2 for smooth color based on the renormalization of the number of iterations to escape bounds.
 
 Generate different images of the Mandelbrot Set by changing these parameters where make_graph is called in main.
 

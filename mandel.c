@@ -43,22 +43,41 @@ int mandlebrot(struct complex c, int max_iterations) {
 
 /* takes the number of iterations to go out of bounds and returns
 an rgb struct */
-struct rgb get_color(int n) {
+// 0 = black and white
+// 1 = basic color
+// 2 = color using renormalization of the mandelbrot escape
+struct rgb get_color(int n, int option, double modulus) {
 	struct rgb result = {0, 0, 0};
 	if (n == -1) {
 		return result;
-	} else {
+	} else if (option == 0) {
+		result.r = 255;
+		result.g = 255;
+		result.b = 255;
+		return result;
+	} else if (option == 1) {
 		result.r = 255 - pow(n, 2);
 		result.g = 255 - n;
-		result.b = 255; //- pow(n, 3); //* atan(n * 3.14 / 180) * 2.0 / 3.14; 
+		result.b = 255;
 		return result;
+	} else if (option == 2) {
+		double mu = n - (log(fabs(log(modulus))) / log(2.0));
+		// if (mu != mu) 
+			// fprintf(stderr, "%f | %f\n", modulus, mu);
+		result.r = 255 * mu / 50;
+		result.g = 0;
+		result.b = 120;
+		return result;
+	} else {
+		fprintf(stderr, "get_color: invalid option\n");
+		exit(1);
 	}
 
 }
 
 /* takes pixels per unit, the coordinates of the top left corner
  of the image, a logical width and a height and makes a graph object */
-struct graph *make_graph(long pixel_density, double x, double y, double log_width, double log_height, int max) {
+struct graph *make_graph(long pixel_density, double x, double y, double log_width, double log_height, int max, int option) {
 	long physical_width = log_width * pixel_density;
 	long physical_height = log_height * pixel_density;
 	long size = physical_height * physical_width;
@@ -83,7 +102,7 @@ struct graph *make_graph(long pixel_density, double x, double y, double log_widt
 		double a = x + ((i % physical_width) * logical_pixel_size);
 		double b = y - (floor(i / (double)physical_width) * logical_pixel_size);
 		struct complex c = {a, b};
-		plane->pixels[i] = get_color(mandlebrot(c, max));
+		plane->pixels[i] = get_color(mandlebrot(c, max), option, distance(c));
 	}
 
 	return plane;
@@ -118,11 +137,15 @@ int main()
 	// --- CHANGE SETTINGS HERE ---
 
 	// default / zoomed out version
-	//struct graph *g = make_graph(600, -3, 1, 2, 1, 1000);
+	struct graph *g = make_graph(600, -3, 1, 2, 1, 100, 2);
+	// higher res version of the default !WARNING takes about a minute to run
+	//struct graph *g = make_graph(2400, -3, 1, 2, 1, 1500, 1);
 	// zoomed in 
-	struct graph *g = make_graph(1000, -1.5, 0.75, 1, 1, 100);
-
- 	// ... loop(s) to write horizontally-mirrored image to stdout ...
+	// struct graph *g = make_graph(600, -1.5, 0.75, 1, 1, 100, 1);
+	// seahorse valley 1
+	// struct graph *g = make_graph(1200, -1, 0.4, 0.75, 0.6, 100, 1);
+	// seahorse valley 2 !WARNING takes about a minute to run
+	// struct graph *g = make_graph(20000, -0.85, 0.2, 0.2, 0.1, 100, 2);
 
 	printf("P3\n");
   	printf("%d %d\n", g->phys_width, g->phys_height);

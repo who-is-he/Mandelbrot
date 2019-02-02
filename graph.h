@@ -30,8 +30,8 @@ int mandlebrot(struct complex c, int max_iterations);
 
 /* takes the number of iterations to go out of bounds and returns
 an rgb struct */
-struct rgb get_color(int n);
+struct rgb get_color(int n, int option, double modulus);
 
 /* takes pixels per unit, the coordinates of the top left corner
  of the image, a width and a height and makes a graph object */
-struct graph *make_graph(long pixel_density, double x, double y, double log_width, double log_height, int max);
+struct graph *make_graph(long pixel_density, double x, double y, double log_width, double log_height, int max, int option);
