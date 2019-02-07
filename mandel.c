@@ -16,7 +16,7 @@ typedef struct complex {
     double b;
 } complex;
 
-/* takes two complex numbers and multiplies them */
+// Takes two complex numbers and multiplies them.
 complex complex_mult(complex x, complex y)
 {
     double ac = x.a * y.a;
@@ -26,21 +26,21 @@ complex complex_mult(complex x, complex y)
     return result;
 }
 
-/* takes two complex numbers and adds them */
+// Takes two complex numbers and adds them.
 complex complex_add(complex x, complex y)
 {
     complex result = {x.a + y.a, x.b + y.b};
     return result;
 }
 
-/* takes a complex number and returns its distance from the origin */
+// Takes a complex number and returns its distance from the origin.
 double distance(complex z)
 {
     return sqrt(pow(z.a, 2) + pow(z.b, 2));
 }
 
-/* takes a complex number and returns how many times it takes
- to go out of bounds, stops and returns -1 if it reaches the max */
+// Takes a complex number and returns how many times it takes
+// to go out of bounds. Stops and returns -1 if it reaches the max_iterations.
 int mandelbrot(complex c, int max_iterations)
 {
     complex z = {0, 0};
@@ -59,11 +59,10 @@ int mandelbrot(complex c, int max_iterations)
         return count;
 }
 
-/* takes the number of iterations to go out of bounds and returns
-an rgb */
-// 0 = black and white
-// 1 = basic color
-// 2 = color using renormalization of the mandelbrot escape
+// Takes the number of iterations to go out of bounds and returns an rgb struct.
+// Option 0: Black and White. 
+// Option 1: Basic coloring.
+// Option 2: Color using renormalization of the mandelbrot escape.
 rgb get_color(int n, int option, double modulus) {
     double mu;
     rgb result = {0, 0, 0};
@@ -105,12 +104,12 @@ rgb get_color(int n, int option, double modulus) {
         exit(1);
     }
 }
-
+// Creates a mandelbrot image file. 
 int draw_graph(int pixel_density, double x, double y, double log_width, double log_height, int max, int option)
 {
     unsigned int row, column;
     unsigned int physical_height = log_height * pixel_density;
-    unsigned int  physical_width = log_width * pixel_density;
+    unsigned int physical_width = log_width * pixel_density;
     unsigned int size = physical_height * physical_width;
     double logical_pixel_size, a, b;
     complex c;
@@ -127,6 +126,7 @@ int draw_graph(int pixel_density, double x, double y, double log_width, double l
     fprintf(file_data, "%u %u\n", physical_width, physical_height);
     fprintf(file_data, "%d\n", COLOR_DEPTH);
 
+    // Calculate each pixels color using the mandelbrot function.
     for (row = 0; row < physical_height; row++)
     {
         for (column = 0; column < physical_width; column++)
@@ -147,11 +147,16 @@ int draw_graph(int pixel_density, double x, double y, double log_width, double l
 int main(int argc, char **argv)
 {
     double time_taken;
-    clock_t t; 
+    clock_t t = clock();
 
-    t = clock();
     // default / zoomed out version
     // g = make_graph(600, -3, 1, 2, 1, 100, 2);
+    
+    if (argc != 8)
+    {
+        fprintf(stderr, "Incorrect number of arguments. Format is <pixel_density> <x> <y> <log_width> <log_height> <max> <option>\n");
+        return -1;
+    }
 
     draw_graph(
         atoi(argv[1]), // int pixel_density
